@@ -25,7 +25,6 @@ out vec4 color;
 uniform vec3 viewPos;
 uniform Material material;
 uniform Light light;
-uniform sampler2D texture_diffuse1;
 
 void main()
 {
@@ -45,5 +44,5 @@ void main()
     vec3 specular = light.specular * (spec * material.specular);
     
     vec3 result = ambient + diffuse + specular;
-    color = vec4(result, 1.0f)*texture(texture_diffuse1,TexCoords);
+    color = vec4(result, 1.0f);
 }
