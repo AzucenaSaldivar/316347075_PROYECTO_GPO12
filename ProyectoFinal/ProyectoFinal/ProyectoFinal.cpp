@@ -32,7 +32,7 @@ void DoMovement();
 
 
 // Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
+Camera camera(glm::vec3(-1.0f, 7.5f, -6.5f));
 bool keys[1024];
 GLfloat lastX = 400, lastY = 300;
 bool firstMouse = true;
@@ -105,6 +105,7 @@ int main()
 
     // Load models
     Model cuadroTimmy((char*)"CuadroTimmy/Cuadro.obj");
+    Model casaTimmy((char*)"Models/CasaTimmy/CasaTimmy.obj");
     glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
 
     float vertices[] = {
@@ -239,14 +240,21 @@ int main()
 
 
 
-        // Draw the loaded model
+        // Cuadro
         glm::mat4 model(1);
-        //model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
-        model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::translate(model, glm::vec3(-1.0f, 7.5f, -6.5f));
+        model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
-        /* glDrawArrays(GL_TRIANGLES, 0, 36);*/
         cuadroTimmy.Draw(lightingShader);
+
+        //casa
+        model = glm::mat4(1);
+        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(VAO);
+        casaTimmy.Draw(lightingShader);
 
         glBindVertexArray(0);
 
