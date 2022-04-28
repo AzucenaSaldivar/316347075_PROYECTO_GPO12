@@ -32,14 +32,14 @@ void DoMovement();
 
 
 // Camera
-Camera camera(glm::vec3(-1.0f, 7.5f, -6.5f));
+Camera camera(glm::vec3(0.0f, 7.5f, -6.5f));
 bool keys[1024];
 GLfloat lastX = 400, lastY = 300;
 bool firstMouse = true;
 
 
 // Light attributes
-glm::vec3 lightPos(0.5f, 0.5f, 2.5f);
+glm::vec3 lightPos(0.0f, 7.5f, -6.5f);
 float movelightPosx = 0.0f;
 float movelightPosy = 0.0f;
 float movelightPosz = 0.0f;
@@ -100,12 +100,19 @@ int main()
     Shader shader("Shaders/modelLoading.vs", "Shaders/modelLoading.frag");
     Shader lampshader("Shaders/lamp.vs", "Shaders/lamp.frag");
     Shader lightingShader("Shaders/lighting.vs", "Shaders/lighting.frag");
+    Shader lightingShader2("Shaders/lighting2.vs", "Shaders/lighting2.frag");
 
 
 
     // Load models
     Model cuadroTimmy((char*)"CuadroTimmy/Cuadro.obj");
     Model casaTimmy((char*)"Models/CasaTimmy/CasaTimmy.obj");
+    Model Buro((char*)"Models/Buro/buro.obj");
+    Model Cama((char*)"Models/Cama/camaTimmy.obj");
+    Model Almohada((char*)"Models/Almohada/Almohada.obj");
+    Model Pecera((char*)"Models/PeceraTimmy/peceraTimmy.obj");
+    Model escritorio((char*)"Models/Escritorio/escritorio.obj");
+
     glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
 
     float vertices[] = {
@@ -179,20 +186,6 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 
-    image = stbi_load("images/goku.jpg", &textureWidth, &textureHeight, &nrChannels, 0);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    if (image)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(image);
-
 
     // Game loop
     while (!glfwWindowShouldClose(window))
@@ -223,8 +216,6 @@ int main()
         glUniform3f(glGetUniformLocation(lightingShader.Program, "light.specular"), 1.0f, 1.0f, 1.0f);
 
 
-
-
         glm::mat4 view = camera.GetViewMatrix();
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
@@ -242,7 +233,7 @@ int main()
 
         // Cuadro
         glm::mat4 model(1);
-        model = glm::translate(model, glm::vec3(-1.0f, 7.5f, -6.5f));
+        model = glm::translate(model, glm::vec3(-1.05f, 7.25f, -5.5f));
         model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
@@ -255,6 +246,59 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
         casaTimmy.Draw(lightingShader);
+
+        //buró
+        model = glm::mat4(1);
+        model = glm::translate(model, glm::vec3(-0.8f, 6.21f, -4.75f));
+        model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.7f, 0.7f, 0.7f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(VAO);
+        Buro.Draw(lightingShader);
+
+        //cama
+        model = glm::mat4(1);
+        model = glm::translate(model, glm::vec3(-0.23f, 6.21f, -5.5f));
+        //model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(VAO);
+        Cama.Draw(lightingShader);
+        
+        //almohada
+        model = glm::mat4(1);
+        model = glm::translate(model, glm::vec3(-0.85f, 6.55f, -5.5f));
+        model = glm::rotate(model, glm::radians(25.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(VAO);
+        Almohada.Draw(lightingShader);
+
+        // escritorio 
+        model = glm::mat4(1);
+        model = glm::translate(model, glm::vec3(-0.4f, 6.21f, -7.11f));
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.7f, 0.7f, 0.7f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(VAO);
+        escritorio.Draw(lightingShader);
+
+       
+
+
+        //Pecera
+        view = camera.GetViewMatrix();
+        model = glm::mat4(1);
+        model = glm::translate(model, glm::vec3(-0.8f, 6.573f, -4.75f));
+        model = glm::scale(model, glm::vec3(0.08f, 0.08f, 0.08f));
+        glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0, 1.0, 0.0, 0.75);
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(VAO);
+        Pecera.Draw(lightingShader);
+
+
+
+
 
         glBindVertexArray(0);
 

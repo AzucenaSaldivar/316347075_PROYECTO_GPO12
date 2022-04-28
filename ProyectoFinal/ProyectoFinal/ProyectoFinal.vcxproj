@@ -146,6 +146,8 @@
     <None Include="Shaders\lamp.vs" />
     <None Include="Shaders\lighting.frag" />
     <None Include="Shaders\lighting.vs" />
+    <None Include="Shaders\lighting2.frag" />
+    <None Include="Shaders\lighting2.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mesh.h" />

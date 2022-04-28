@@ -27,6 +27,12 @@
     <None Include="Shaders\lighting.vs">
       <Filter>Archivos de origen</Filter>
     </None>
+    <None Include="Shaders\lighting2.frag">
+      <Filter>Archivos de origen</Filter>
+    </None>
+    <None Include="Shaders\lighting2.vs">
+      <Filter>Archivos de origen</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mesh.h">
@@ -37,7 +43,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="316347075_REPORTE8_GPO12.cpp">
+    <ClCompile Include="ProyectoFinal.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
