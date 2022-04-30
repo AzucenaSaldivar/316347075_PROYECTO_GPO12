@@ -105,13 +105,16 @@ int main()
 
 
     // Load models
-    Model cuadroTimmy((char*)"CuadroTimmy/Cuadro.obj");
+    Model cuadroTimmy((char*)"Models/CuadroTimmy/Cuadro.obj");
     Model casaTimmy((char*)"Models/CasaTimmy/CasaTimmy.obj");
     Model Buro((char*)"Models/Buro/buro.obj");
     Model Cama((char*)"Models/Cama/camaTimmy.obj");
     Model Almohada((char*)"Models/Almohada/Almohada.obj");
     Model Pecera((char*)"Models/PeceraTimmy/peceraTimmy.obj");
     Model escritorio((char*)"Models/Escritorio/escritorio.obj");
+    Model silla((char*)"Models/Silla/silla.obj");
+    Model castillo((char*)"Models/PeceraTimmy/castillo.obj");
+
 
     glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
 
@@ -283,20 +286,64 @@ int main()
         glBindVertexArray(VAO);
         escritorio.Draw(lightingShader);
 
+        //Silla
+
+        model = glm::mat4(1);
+        model = glm::translate(model, glm::vec3(-0.4f, 6.21f, -6.51f));
+        model = glm::rotate(model, glm::radians(-270.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.8f, 0.8f, 0.8f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(VAO);
+        silla.Draw(lightingShader);
        
-
-
-        //Pecera
+        //Castillo
         view = camera.GetViewMatrix();
         model = glm::mat4(1);
         model = glm::translate(model, glm::vec3(-0.8f, 6.573f, -4.75f));
-        model = glm::scale(model, glm::vec3(0.08f, 0.08f, 0.08f));
+        model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
         glUniform4f(glGetUniformLocation(lightingShader.Program, "colorAlpha"), 1.0, 1.0, 0.0, 0.75);
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
-        Pecera.Draw(lightingShader);
+        castillo.Draw(lightingShader);
 
+        lightingShader2.Use();
+        GLint viewPosLoc2 = glGetUniformLocation(lightingShader2.Program, "viewPos");
+        glUniform3f(viewPosLoc2, camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
 
+        glUniform3f(glGetUniformLocation(lightingShader2.Program, "dirLight.direction"), -0.2f, -1.0f, -0.3f);
+        glUniform3f(glGetUniformLocation(lightingShader2.Program, "dirLight.ambient"), 0.4f, 0.4f, 0.4f);
+        glUniform3f(glGetUniformLocation(lightingShader2.Program, "dirLight.diffuse"), 0.4f, 0.4f, 0.4f);
+        glUniform3f(glGetUniformLocation(lightingShader2.Program, "dirLight.specular"), 0.4f, 0.4f, 0.4f);
+
+        glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 32.0f);
+
+        // Create camera transformations
+        glm::mat4 view2;
+        view2 = camera.GetViewMatrix();
+
+        // Get the uniform locations
+        GLint modelLoc2 = glGetUniformLocation(lightingShader2.Program, "model");
+        GLint viewLoc2 = glGetUniformLocation(lightingShader2.Program, "view");
+        GLint projLoc2 = glGetUniformLocation(lightingShader2.Program, "projection");
+
+        // Pass the matrices to the shader
+        glUniformMatrix4fv(viewLoc2, 1, GL_FALSE, glm::value_ptr(view2));
+        glUniformMatrix4fv(projLoc2, 1, GL_FALSE, glm::value_ptr(projection));
+      
+        //Pecera
+        
+        view2 = camera.GetViewMatrix();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        model = glm::mat4(1);
+        model = glm::translate(model, glm::vec3(-0.8f, 6.573f, -4.75f));
+        model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+        glUniformMatrix4fv(modelLoc2, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1i(glGetUniformLocation(lightingShader2.Program, "activaTransparencia"), 1);
+        glUniform4f(glGetUniformLocation(lightingShader2.Program, "colorAlpha"), 1.0, 1.0, 1.0, 0.1);
+        Pecera.Draw(lightingShader2);
+        glDisable(GL_BLEND);  //Desactiva el canal alfa 
+        glUniform4f(glGetUniformLocation(lightingShader2.Program, "colorAlpha"), 1.0, 1.0, 1.0, 1.0);
 
 
 
