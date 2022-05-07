@@ -114,6 +114,7 @@ int main()
     Model escritorio((char*)"Models/Escritorio/escritorio.obj");
     Model silla((char*)"Models/Silla/silla.obj");
     Model castillo((char*)"Models/PeceraTimmy/castillo.obj");
+    Model exterior((char*)"Models/Cerca/Exterior.obj");
 
 
     glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
@@ -203,7 +204,7 @@ int main()
         DoMovement();
 
         // Clear the colorbuffer
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.709f, 0.858f, 0.925f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         lightingShader.Use();
@@ -249,6 +250,14 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
         casaTimmy.Draw(lightingShader);
+
+        //Exterior 
+        model = glm::mat4(1);
+        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(VAO);
+        exterior.Draw(lightingShader);
+
 
         //buró
         model = glm::mat4(1);
