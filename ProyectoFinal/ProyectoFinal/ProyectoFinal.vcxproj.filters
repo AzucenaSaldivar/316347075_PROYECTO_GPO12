@@ -33,6 +33,24 @@
     <None Include="Shaders\lighting2.vs">
       <Filter>Archivos de origen</Filter>
     </None>
+    <None Include="Shaders\anim.frag">
+      <Filter>Archivos de origen</Filter>
+    </None>
+    <None Include="Shaders\anim.vs">
+      <Filter>Archivos de origen</Filter>
+    </None>
+    <None Include="Shaders\anim2.frag">
+      <Filter>Archivos de origen</Filter>
+    </None>
+    <None Include="Shaders\anim2.vs">
+      <Filter>Archivos de origen</Filter>
+    </None>
+    <None Include="Shaders\anim3.frag">
+      <Filter>Archivos de origen</Filter>
+    </None>
+    <None Include="Shaders\anim3.vs">
+      <Filter>Archivos de origen</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mesh.h">

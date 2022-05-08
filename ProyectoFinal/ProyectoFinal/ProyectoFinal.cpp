@@ -101,20 +101,25 @@ int main()
     Shader lampshader("Shaders/lamp.vs", "Shaders/lamp.frag");
     Shader lightingShader("Shaders/lighting.vs", "Shaders/lighting.frag");
     Shader lightingShader2("Shaders/lighting2.vs", "Shaders/lighting2.frag");
-
-
+    Shader Anim("Shaders/anim.vs", "Shaders/anim.frag");
+    Shader Anim2("Shaders/anim2.vs", "Shaders/anim2.frag");
+    Shader Anim3("Shaders/anim3.vs", "Shaders/anim3.frag");
 
     // Load models
     Model cuadroTimmy((char*)"Models/CuadroTimmy/Cuadro.obj");
     Model casaTimmy((char*)"Models/CasaTimmy/CasaTimmy.obj");
     Model Buro((char*)"Models/Buro/buro.obj");
     Model Cama((char*)"Models/Cama/camaTimmy.obj");
+    Model Cuna((char*)"Models/CamaPuff/cuna.obj");
     Model Almohada((char*)"Models/Almohada/Almohada.obj");
     Model Pecera((char*)"Models/PeceraTimmy/peceraTimmy.obj");
     Model escritorio((char*)"Models/Escritorio/escritorio.obj");
     Model silla((char*)"Models/Silla/silla.obj");
     Model castillo((char*)"Models/PeceraTimmy/castillo.obj");
     Model exterior((char*)"Models/Cerca/Exterior.obj");
+    Model agua((char*)"Models/PeceraTimmy/agua.obj");
+    Model wanda((char*)"Models/Wanda/wanda.obj");
+    Model timmy((char*)"Models/Timmy/timmy.obj");
 
 
     glm::mat4 projection = glm::perspective(camera.GetZoom(), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
@@ -251,12 +256,12 @@ int main()
         glBindVertexArray(VAO);
         casaTimmy.Draw(lightingShader);
 
-        //Exterior 
-        model = glm::mat4(1);
-        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glBindVertexArray(VAO);
-        exterior.Draw(lightingShader);
+        ////Exterior 
+        //model = glm::mat4(1);
+        //model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+        //glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        //glBindVertexArray(VAO);
+        //exterior.Draw(lightingShader);
 
 
         //buró
@@ -276,6 +281,16 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
         Cama.Draw(lightingShader);
+
+        //Cuna
+        model = glm::mat4(1);
+        model = glm::translate(model, glm::vec3(-0.23f, 6.7f, -5.0f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.1 * glm::abs(glm::sin(0.3 * glfwGetTime())), 0.0f));
+        model = glm::rotate(model, glm::radians(110.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(VAO);
+        Cuna.Draw(lightingShader);
         
         //almohada
         model = glm::mat4(1);
@@ -299,8 +314,10 @@ int main()
 
         model = glm::mat4(1);
         model = glm::translate(model, glm::vec3(-0.4f, 6.21f, -6.51f));
+        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.4*glm::abs(glm::sin(0.3*glfwGetTime()))));
         model = glm::rotate(model, glm::radians(-270.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::scale(model, glm::vec3(0.8f, 0.8f, 0.8f));
+        
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
         silla.Draw(lightingShader);
@@ -314,6 +331,73 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         glBindVertexArray(VAO);
         castillo.Draw(lightingShader);
+
+        //Wanda
+        Anim2.Use();
+        GLint modelLoc4 = glGetUniformLocation(Anim2.Program, "model");
+        GLint viewLoc4 = glGetUniformLocation(Anim2.Program, "view");
+        GLint projLoc4 = glGetUniformLocation(Anim2.Program, "projection");
+
+        float tiempo2 = glfwGetTime();
+
+        glUniformMatrix4fv(viewLoc4, 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(projLoc4, 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(modelLoc4, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(modelLoc4, 1, GL_FALSE, glm::value_ptr(model));
+        model = glm::mat4(1);
+        model = glm::translate(model, glm::vec3(-0.8f, 6.9f, -4.75f));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+        glUniformMatrix4fv(modelLoc4, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1f(glGetUniformLocation(Anim2.Program, "time"), tiempo2);
+        glBindVertexArray(VAO);
+        wanda.Draw(Anim2);
+
+        //Timmy
+        Anim3.Use();
+        GLint modelLoc5 = glGetUniformLocation(Anim3.Program, "model");
+        GLint viewLoc5 = glGetUniformLocation(Anim3.Program, "view");
+        GLint projLoc5 = glGetUniformLocation(Anim3.Program, "projection");
+
+        float tiempo3 = glfwGetTime();
+
+        glUniformMatrix4fv(viewLoc5, 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(projLoc5, 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(modelLoc5, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(modelLoc5, 1, GL_FALSE, glm::value_ptr(model));
+        model = glm::mat4(1);
+        model = glm::translate(model, glm::vec3(1.6f, 6.2f, -5.3f));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model, glm::radians((float)glfwGetTime() * 90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
+        glUniformMatrix4fv(modelLoc5, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1f(glGetUniformLocation(Anim3.Program, "time"), tiempo3);
+        glBindVertexArray(VAO);
+        timmy.Draw(Anim3);
+
+        //Agua de la pecera
+        Anim.Use();
+        GLint modelLoc3 = glGetUniformLocation(Anim.Program, "model");
+        GLint viewLoc3 = glGetUniformLocation(Anim.Program, "view");
+        GLint projLoc3 = glGetUniformLocation(Anim.Program, "projection");
+
+        float tiempo = glfwGetTime();
+
+        glUniformMatrix4fv(viewLoc3, 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(projLoc3, 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(modelLoc3, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(modelLoc3, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1f(glGetUniformLocation(Anim.Program, "trans"), 0.7);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        model = glm::mat4(1);
+        model = glm::translate(model, glm::vec3(-0.8f, 6.573f, -4.75f));
+        model = glm::scale(model, glm::vec3(0.4f, 0.4f, 0.4f));
+        glUniformMatrix4fv(modelLoc3, 1, GL_FALSE, glm::value_ptr(model));
+        glUniform1f(glGetUniformLocation(Anim.Program, "time"), tiempo);
+        glBindVertexArray(VAO);
+        agua.Draw(Anim);
+        glDisable(GL_BLEND);
 
         lightingShader2.Use();
         GLint viewPosLoc2 = glGetUniformLocation(lightingShader2.Program, "viewPos");
