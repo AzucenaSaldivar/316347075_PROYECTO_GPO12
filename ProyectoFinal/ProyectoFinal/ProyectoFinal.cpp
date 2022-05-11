@@ -30,16 +30,18 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 void MouseCallback(GLFWwindow* window, double xPos, double yPos);
 void DoMovement();
 
-
+void giroTimmy();
+float giro = 0.0f;
 // Camera
-Camera camera(glm::vec3(0.0f, 7.5f, -6.5f));
+Camera camera(glm::vec3(2.0f, 7.5f, -5.5f), glm::vec3(0.0f, 1.0f, 0.0f), -180.0
+);
 bool keys[1024];
 GLfloat lastX = 400, lastY = 300;
 bool firstMouse = true;
 
 
 // Light attributes
-glm::vec3 lightPos(0.0f, 7.5f, -6.5f);
+glm::vec3 lightPos(1.5f, 7.8f, -5.5f);
 float movelightPosx = 0.0f;
 float movelightPosy = 0.0f;
 float movelightPosz = 0.0f;
@@ -256,12 +258,12 @@ int main()
         glBindVertexArray(VAO);
         casaTimmy.Draw(lightingShader);
 
-        ////Exterior 
-        //model = glm::mat4(1);
-        //model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
-        //glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        //glBindVertexArray(VAO);
-        //exterior.Draw(lightingShader);
+        //Exterior 
+        model = glm::mat4(1);
+        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
+        glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glBindVertexArray(VAO);
+        exterior.Draw(lightingShader);
 
 
         //buró
@@ -359,7 +361,8 @@ int main()
         GLint viewLoc5 = glGetUniformLocation(Anim3.Program, "view");
         GLint projLoc5 = glGetUniformLocation(Anim3.Program, "projection");
 
-        float tiempo3 = glfwGetTime();
+       
+        giroTimmy();
 
         glUniformMatrix4fv(viewLoc5, 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(projLoc5, 1, GL_FALSE, glm::value_ptr(projection));
@@ -368,10 +371,10 @@ int main()
         model = glm::mat4(1);
         model = glm::translate(model, glm::vec3(1.6f, 6.2f, -5.3f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        model = glm::rotate(model, glm::radians((float)glfwGetTime() * 90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::rotate(model,glm::radians(giro), glm::vec3(0.0f, 1.0f, 0.0f));
         model = glm::scale(model, glm::vec3(0.3f, 0.3f, 0.3f));
         glUniformMatrix4fv(modelLoc5, 1, GL_FALSE, glm::value_ptr(model));
-        glUniform1f(glGetUniformLocation(Anim3.Program, "time"), tiempo3);
+        glUniform1f(glGetUniformLocation(Anim3.Program, "time"), glm::radians(giro));
         glBindVertexArray(VAO);
         timmy.Draw(Anim3);
 
@@ -565,3 +568,11 @@ void MouseCallback(GLFWwindow* window, double xPos, double yPos)
 }
 
 
+void giroTimmy() {
+    if (giro > 360.0f) {
+        giro = 0.0f;
+   }
+    else {
+        giro += 0.5f;
+    }
+}
