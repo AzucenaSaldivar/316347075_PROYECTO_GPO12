@@ -1,0 +1,24 @@
+# Blender MTL File: 'silla.blend'
+# Material Count: 2
+
+newmtl Material.001
+Ns 13.950029
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.129921 0.129921 0.129921
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd sillaArriba.png
+
+newmtl Material.002
+Ns 2.619503
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.106299 0.106299 0.106299
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd sillaAbajo.png
